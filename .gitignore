@@ -1,0 +1,5 @@
+*.log
+SDL_VoxelEngine/SDL_VoxelEngine/Release/
+SDL_VoxelEngine/SDL_VoxelEngine/Debug/
+SDL_VoxelEngine/Release/
+SDL_VoxelEngine/Debug/
