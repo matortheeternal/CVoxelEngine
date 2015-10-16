@@ -13,7 +13,7 @@ Check out the releases section for compiled builds.
 ## Usage
 ### Fractal generation
 #### General
-* **World size:** This value cubed is the number of bytes your world will take up in RAM.  Note, as of v0.1.1 the world is allocated as a single contiguous array, so you may not be able to get as high as the amount of RAM you have free (with 6gb of RAM I can only make a 1gb - 1024^3 world)
+* **World size:** This value cubed is the number of bytes your world will take up in RAM.  Note, as of v0.1.1 the world is allocated as a single contiguous array, so you may not be able to get as high as the amount of largest uninterrupted chunk of ram (with 6gb of RAM I can only make a 1gb - 1024^3 world)
 * **Object type:** box = mandelbox, bulb = mandelbulb, octflake = octahedron flake, sponge = menger sponge, cube = a gradient cube, dust = cantor dust
 * **Object size:** This value is the size of the object you're generating.  I recommend generating an object a little smaller than your world size (give like 3-4 blocks of padding on the sides).  Note that certain fractals require object sizes that fulfill certain conditions to be generated properly.
 
