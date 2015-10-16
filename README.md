@@ -8,10 +8,7 @@ You can see images that I've generated using this graphics engine [here](http://
 You need to install the SDL dlls in your system root directory in order to build or run my CVoxelEngine.  I have provided the 64-bit SDL dlls in the lib folder of this repository, which you'd install in %SystemRoot%\SysWOW64 (e.g. C:\Windows\SysWOW64).
 
 ## Building
-You can build this project with Microsoft Visual Studio.  Project files are provided.
-
-## Release
-Check out the [releases section](https://github.com/matortheeternal/CVoxelEngine/releases) for compiled builds.
+You can build this project with Microsoft Visual Studio.  Project files are provided.  Check out the [releases section](https://github.com/matortheeternal/CVoxelEngine/releases) for compiled builds.
 
 ## Usage
 ### Fractal generation
