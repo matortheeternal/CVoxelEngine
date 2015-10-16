@@ -26,7 +26,7 @@ Check out the releases section for compiled builds.
 * **Fallout:** A good choice for this value depends on your scale.  Something around f =  1.5 * v^2   is pretty good (v being scale).
 
 #### bulb (Mandelbulb)
-* Object size: Any value
+* **Object size:** Any value
 * **Minimum Iterations:** I recommend a value of 4, but you can deviate from that as you see fit.  (higher values will create sparser objects)
 * **Maximum Iterations:** I recommend a value between 16 and 50.  Higher values will increase generation time, and each successive increase in the iterations adds less voxels to the object than the last.
 * **Scale:** Generally, most mandelbulbs are generated with integer scale values between 5 and 16.  8 is the most commonly used value.
