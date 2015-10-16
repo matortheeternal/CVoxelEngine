@@ -1,6 +1,9 @@
 # CVoxelEngine
 A C++ Voxel Engine, to succeed my Java Voxel Engine.  Uses SDL, and may use OpenCL in the future.
 
+## Images
+You can see images that I've generated using this graphics engine [here](http://imgur.com/a/0aU6M/all).  (WARNING: Ultra-high-resolution images, don't open if you have limited bandwidth.)
+
 ## Building
 You can build this project with Microsoft Visual Studio.  Project files are provided.
 
