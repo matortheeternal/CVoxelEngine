@@ -51,7 +51,7 @@ You can build this project with Microsoft Visual Studio.  Project files are prov
 * **- +**: For increasing or decresing the pixel scale of the rendered image (larger scale = shorter render times).
 * **< >**: For increasing or decreasing render distance (farther/closer)
 * **P**: To change the palette.  Will have to enter a palette name in the command prompt window.
-* **C**: To capture a screenshot.  Will have you enter a width, height, horizontal field of view, and vertical field of view.  Field of view values should be entered as radians (2 * pi = 360 degrees)
+* **C**: To capture a screenshot.  Will have you enter a resolution (e.g. 3840x2160) if you opt to use smart capture, else will prompt you for width, height, fovH, and fovV individually.
 * **9 0**: For increasing or decreasing the distance at which lighting begins to fall off (-/+).
 * **7 8**: For increasing or decreasing the rate at which lighting falls off (-/+)
 * **\\**: To generate a new random palette.
