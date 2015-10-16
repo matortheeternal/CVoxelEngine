@@ -54,4 +54,4 @@ Check out the releases section for compiled builds.
 * C: To capture a screenshot.  Will have you enter a width, height, horizontal field of view, and vertical field of view.  Field of view values should be entered as radians (2 * pi = 360 degrees)
 * 9,0: For increasing or decreasing the distance at which lighting begins to fall off (-/+).
 * 7,8: For increasing or decreasing the rate at which lighting falls off (-/+)
-* \: To generate a new random palette.
+* \\: To generate a new random palette.
