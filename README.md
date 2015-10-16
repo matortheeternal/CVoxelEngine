@@ -38,7 +38,7 @@ Check out the releases section for compiled builds.
 
 #### octflake
 * **Object size:** Relative to scale.  Apply 2 * v +  1 to scale repeatedly to get higher iteration objects.
-* **Scale:** I recommend a value >= 7, so you can see the individual octahedrons.
+* **Scale:** I recommend an odd value >= 7, so you can see the individual octahedrons and can see the middle layer.
 
 #### sponge
 * **Object size:** A power of 3
