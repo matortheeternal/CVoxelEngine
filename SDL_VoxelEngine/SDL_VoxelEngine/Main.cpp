@@ -3,13 +3,15 @@
 #include <ctime>
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <vector>
 #include "Renderer.h"
 #include "ObjectGenerator.h"
 
 // Frame constants
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 960;
-const double pi = 3.14159f;
+const float pi = 3.14159f;
 int BPP = 4;
 
 // SDL functions
@@ -36,8 +38,23 @@ World* world;
 Camera* camera;
 ObjectGenerator* generator;
 ColorLibrary* library;
-double speed = 1.0f;
+float speed = 1.0f;
 Palette* palette;
+
+std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+	std::stringstream ss(s);
+	std::string item;
+	while (std::getline(ss, item, delim)) {
+		elems.push_back(item);
+	}
+	return elems;
+}
+
+std::vector<std::string> split(const std::string &s, char delim) {
+	std::vector<std::string> elems;
+	split(s, delim, elems);
+	return elems;
+}
 
 bool init() {
 	// Initialization flag
@@ -68,21 +85,6 @@ bool init() {
 	return success;
 }
 
-bool loadMedia() {
-	//Loading success flag
-	bool success = true;
-
-	//Load splash image
-	gSurface = SDL_LoadBMP("1280x960.bmp");
-	if (gSurface == NULL)
-	{
-		printf("Unable to load image %s! SDL Error: %s\n", "hello_world.bmp", SDL_GetError());
-		success = false;
-	}
-
-	return success;
-}
-
 void close() {
 	// Deallocate surface
 	SDL_FreeSurface(gSurface);
@@ -104,7 +106,7 @@ void captureImage(int width, int height) {
 		Uint8 *pixels = (Uint8 *)imageSurface->pixels;
 		renderer->renderFrame(pixels, width, height, 1);
 		int rn = rand() % 1000000;
-		std:string filename = "image-" + std::to_string(rn) + ".bmp";
+		string filename = "image-" + std::to_string(rn) + ".bmp";
 		SDL_SaveBMP(imageSurface, filename.c_str());
 	}
 }
@@ -281,6 +283,53 @@ void NewRandomPalette() {
 	library->addPalette(paletteName, colorNames);
 }
 
+void CaptureImageAction() {
+	printf("\n== Capture image ==\n");
+	
+	// initialize variables
+	int width = 0;
+	int height = 0;
+	float fovV = 0;
+	float fovH = 0;
+	float oldFovV = camera->fovV;
+	float oldFovH = camera->fovH;
+
+	// get aspect ratio from user
+	char toggle;
+	printf("Use smart capture? y/n ");
+	cin >> toggle;
+	if (toggle = 'y') {
+		string resolution;
+		printf("Enter a resolution.\n  Examples: 4096x4096, 2560x1920, 3840x2160, 3840x1080\n");
+		printf("Resolution = ");
+		cin >> resolution;
+		vector<string> vs = split(resolution, 'x');
+		width = atoi(vs.at(0).c_str());
+		height = atoi(vs.at(1).c_str());
+		fovH = pi / 2.5;
+		fovV = (height * 2 * pi) / (9 * width);
+	} else {
+		printf("Width = ");
+		cin >> width;
+		printf("Height = ");
+		cin >> height;
+		printf("FovH = ");
+		cin >> fovH;
+		printf("FovV = ");
+		cin >> fovV;
+	}
+
+	// capture image
+	double start = clock();
+	camera->fovH = fovH;
+	camera->fovV = fovV;
+	captureImage(width, height);
+	double duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+	printf("DONE! (%#.3fs)\n", duration);
+	camera->fovH = oldFovH;
+	camera->fovV = oldFovV;
+}
+
 using namespace std;
 
 int main(int argc, char* args[]) {
@@ -296,7 +345,7 @@ int main(int argc, char* args[]) {
 	string ObjectType;
 
 	// initialize colors and palettes
-	srand(time(NULL));
+	srand((unsigned int) time(NULL));
 	library = new ColorLibrary();
 	addColors();
 	addPalettes();
@@ -334,7 +383,8 @@ int main(int argc, char* args[]) {
 	int cOffset = offset - 2;
 	printf("\nInitializing world...\n");
 	world = new World(WorldSize);
-	camera = new Camera(cOffset, cOffset, cOffset, 0, 0, pi / 2.0f, pi / 2.5f, pi / 6.0f);
+	// initialize camera, fovH = ~1.2566, fovV = 0.5235
+	camera = new Camera((float) cOffset, (float) cOffset, (float) cOffset, 0, 0, pi / 2.0f, pi / 2.5f, pi / 6.0f);
 	renderer = new Renderer(world, camera);
 	renderer->defaultOptions();
 	generator = new ObjectGenerator(world);
@@ -360,7 +410,7 @@ int main(int argc, char* args[]) {
 		}
 	}
 	else if (ObjectType == "octflake") {
-		FlakeParams* fParams = new FlakeParams(ObjectSize, offset, offset, offset, scale);
+		FlakeParams* fParams = new FlakeParams(ObjectSize, offset, offset, offset, (int) scale);
 		if (ObjectType == "octflake") {
 			generator->generateOctFlake(fParams);
 		}
@@ -389,11 +439,7 @@ int main(int argc, char* args[]) {
 	}
 	else
 	{
-		//Load media
-		if (!loadMedia())
-		{
-			printf("Failed to load media!\n");
-		}
+		gSurface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 24, 0, 0, 0, 0);
 	}
 
 	printf("%d, %d, %d, %d\n", gSurface->pitch, gSurface->format, gSurface->w, gSurface->h);
@@ -409,7 +455,7 @@ int main(int argc, char* args[]) {
 		frames++;
 		if (frames == 60) {
 			duration = (clock() - start) / (double) CLOCKS_PER_SEC;;
-			std:printf("FPS: %f\n", 60 / duration);
+			printf("FPS: %f\n", 60 / duration);
 			printCameraCoords();
 			printLightingInfo();
 			start = clock();
@@ -483,27 +529,7 @@ int main(int argc, char* args[]) {
 			LoadPalette(PaletteChoice, ObjectType, minIt, maxIt);
 		}
 		if (keys[SDL_GetScancodeFromKey(SDLK_c)]) {
-			printf("== Capture image ==\n");
-			int width = 0;
-			int height = 0;
-			float fovV = 0;
-			float fovH = 0;
-			float oldFovV = camera->fovV;
-			float oldFovH = camera->fovH;
-			printf("Width = ");
-			cin >> width;
-			printf("Height = ");
-			cin >> height;
-			printf("FovV = ");
-			cin >> fovV;
-			printf("FovH = ");
-			cin >> fovH;
-			camera->fovV = fovV;
-			camera->fovH = fovH;
-			captureImage(width, height);
-			printf("DONE!");
-			camera->fovV = oldFovV;
-			camera->fovH = oldFovH;
+			CaptureImageAction();
 		}
 		if (keys[SDL_GetScancodeFromKey(SDLK_RIGHTBRACKET)]) {
 			PaletteChoice = library->nextPalette(PaletteChoice);

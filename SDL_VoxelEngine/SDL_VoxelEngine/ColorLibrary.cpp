@@ -5,7 +5,7 @@ LabeledColor ColorLibrary::getRandomColor() {
 }
 
 LabeledColor ColorLibrary::getColor(string name) {
-	for (int i = 0; i < colors->size(); i++) {
+	for (unsigned int i = 0; i < colors->size(); i++) {
 		LabeledColor c = colors->at(i);
 		if (c.name == name) {
 			return c;
@@ -18,7 +18,7 @@ LabeledColor ColorLibrary::getColor(int index) {
 }
 
 LabeledPalette ColorLibrary::getPalette(string name) {
-	for (int i = 0; i < palettes->size(); i++) {
+	for (unsigned int i = 0; i < palettes->size(); i++) {
 		LabeledPalette p = palettes->at(i);
 		if (p.name == name) {
 			return p;
@@ -31,12 +31,13 @@ LabeledPalette ColorLibrary::getPalette(int index) {
 }
 
 int ColorLibrary::indexOfPalette(string name) {
-	for (int i = 0; i < palettes->size(); i++) {
+	for (unsigned int i = 0; i < palettes->size(); i++) {
 		LabeledPalette p = palettes->at(i);
 		if (p.name == name) {
 			return i;
 		}
 	}
+	return -1;
 }
 
 string ColorLibrary::nextPalette(string name) {

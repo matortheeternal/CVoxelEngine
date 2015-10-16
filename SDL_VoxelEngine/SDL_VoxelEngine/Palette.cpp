@@ -63,18 +63,18 @@ Palette::Palette(LabeledPalette libPalette, ColorLibrary* library, Uint8 max) {
 	float unit = (size - 1) / ((float) (length - 1));
 	for (int i = 0; i < length; i++) {
 		float mappedIndex = i * unit;
-		int lowIndex = floor(mappedIndex);
+		int lowIndex = (int) floor(mappedIndex);
 		if (lowIndex == mappedIndex) {
 			colors[i] = base[lowIndex];
 		} else {
-			int highIndex = ceil(mappedIndex);
+			int highIndex = (int) ceil(mappedIndex);
 			float highPercent = mappedIndex - lowIndex;
-			float lowPercent = 1.0 - highPercent;
+			float lowPercent = 1.0f - highPercent;
 			SDL_Color iColor;
-			iColor.a = floor(lowPercent * base[lowIndex].a + highPercent * base[highIndex].a);
-			iColor.r = floor(lowPercent * base[lowIndex].r + highPercent * base[highIndex].r);
-			iColor.g = floor(lowPercent * base[lowIndex].g + highPercent * base[highIndex].g);
-			iColor.b = floor(lowPercent * base[lowIndex].b + highPercent * base[highIndex].b);
+			iColor.a = (Uint8) floor(lowPercent * base[lowIndex].a + highPercent * base[highIndex].a);
+			iColor.r = (Uint8) floor(lowPercent * base[lowIndex].r + highPercent * base[highIndex].r);
+			iColor.g = (Uint8) floor(lowPercent * base[lowIndex].g + highPercent * base[highIndex].g);
+			iColor.b = (Uint8) floor(lowPercent * base[lowIndex].b + highPercent * base[highIndex].b);
 			colors[i] = iColor;
 		}
 

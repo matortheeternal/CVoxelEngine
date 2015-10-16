@@ -7,12 +7,12 @@ using namespace std;
 typedef struct LabeledColor {
 	string name;
 	SDL_Color color;
-};
+} LabeledColor;
 
 typedef struct LabeledPalette {
 	string name;
 	vector<string> palette;
-};
+} LabeledPalette;
 
 class ColorLibrary {
 private:

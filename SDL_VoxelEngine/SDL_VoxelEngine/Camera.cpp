@@ -1,7 +1,7 @@
 #include "Camera.h"
 
-Camera::Camera(double _x, double _y, double _z, double _rotY, double _rotZ, double _rotX, 
-	double _fovH, double _fovV) {
+Camera::Camera(float _x, float _y, float _z, float _rotY, float _rotZ, float _rotX, 
+	float _fovH, float _fovV) {
 	x = _x;
 	y = _y;
 	z = _z;

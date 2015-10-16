@@ -9,10 +9,18 @@ template <typename T> int sgn(T val) {
 	return (T(0) < val) - (val < T(0));
 }
 
+template <typename T> T max(T a, T b)
+{
+	return a > b ? a : b;
+}
+
 void Renderer::defaultOptions() {
 	falloff = 4.0f;
-	rate = 0.6f;
+	rate = 1.0f;
+	ambientIntensity = 0.2f;
+	directionalIntensity = 0.3f;
 	renderDistance = 100;
+
 }
 
 void Renderer::renderThread(Uint8* pixels, int y1, int y2, int width, int height, float* ref, int pixelScale) {
@@ -74,8 +82,8 @@ void Renderer::renderFrame(Uint8* pixels, int width, int height, int pixelScale)
 }
 
 SDL_Color Renderer::raycastFrom(int px, int py, int width, int height, float* ref) {
-	float w2 = width / 2.0;
-	float h2 = height / 2.0;
+	float w2 = width / 2.0f;
+	float h2 = height / 2.0f;
 
 	float x = camera->x;
 	float y = camera->y;
@@ -127,9 +135,9 @@ SDL_Color Renderer::raycast(float x, float y, float z, float* ray) {
 	float tDeltaY = 1 / ay;
 	float tDeltaZ = 1 / az;
 
-	float tMaxX = abs((sx == 1) ? (1 - (fmod(x, 1.0))) : (fmod(x, 1.0))) / ax;
-	float tMaxY = abs((sy == 1) ? (1 - (fmod(y, 1.0))) : (fmod(y, 1.0))) / ay;
-	float tMaxZ = abs((sz == 1) ? (1 - (fmod(z, 1.0))) : (fmod(z, 1.0))) / az;
+	float tMaxX = (float) abs((sx == 1) ? (1 - (fmod(x, 1.0f))) : (fmod(x, 1.0f))) / ax;
+	float tMaxY = (float) abs((sy == 1) ? (1 - (fmod(y, 1.0f))) : (fmod(y, 1.0f))) / ay;
+	float tMaxZ = (float) abs((sz == 1) ? (1 - (fmod(z, 1.0f))) : (fmod(z, 1.0f))) / az;
 
 	n = (int) (abs(dx) + abs(dy) + abs(dz));
 
@@ -160,10 +168,10 @@ SDL_Color Renderer::raycast(float x, float y, float z, float* ray) {
 				tMaxZ += tDeltaZ;
 			}
 		}
-		Uint8 block = world->getBlock(x, y, z);
+		Uint8 block = world->getBlock((int) x, (int) y, (int) z);
 		if (block != 0) {
 			SDL_Color c = world->getColor(block);
-			return calculateColor(c, startX, x, startY, y, startZ, z);
+			return calculateColor(c, face, startX, x, startY, y, startZ, z);
 		}
 	}
 
@@ -186,17 +194,22 @@ Renderer::Renderer(World* _world, Camera* _camera) {
 	skybox.r = 0;
 }
 
-SDL_Color Renderer::calculateColor(SDL_Color c, float x1, float x2, float y1, 
+SDL_Color Renderer::calculateColor(SDL_Color c, int face, float x1, float x2, float y1, 
 	float y2, float z1, float z2) {
+	float ray[] = { x1 - x2, y1 - y2, z1 - z2 };
 	float distance = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
-	double lightIntensity = falloff / pow(distance, rate);
+	float dot = abs(ray[face]);
+
+	// compute light intensity from ambient, directional, and diffuse light intensities
+	float diffuseIntensity = (falloff / pow(distance, rate)) * dot;
+	float lightIntensity = ambientIntensity + (1 - ambientIntensity - directionalIntensity) * diffuseIntensity;
 
 	// calculate color components
-	int red = (int)(c.r * lightIntensity);
+	int red = (int) (c.r * lightIntensity);
 	red = (red > 255) ? 255 : red;
-	int green = (int)(c.g * lightIntensity);
+	int green = (int) (c.g * lightIntensity);
 	green = (green > 255) ? 255 : green;
-	int blue = (int)(c.b * lightIntensity);
+	int blue = (int) (c.b * lightIntensity);
 	blue = (blue > 255) ? 255 : blue;
 	c.r = red;
 	c.b = blue;
