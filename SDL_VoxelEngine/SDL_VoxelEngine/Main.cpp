@@ -298,7 +298,7 @@ void CaptureImageAction() {
 	char toggle;
 	printf("Use smart capture? y/n ");
 	cin >> toggle;
-	if (toggle = 'y') {
+	if (toggle == 'y') {
 		string resolution;
 		printf("Enter a resolution.\n  Examples: 4096x4096, 2560x1920, 3840x2160, 3840x1080\n");
 		printf("Resolution = ");
