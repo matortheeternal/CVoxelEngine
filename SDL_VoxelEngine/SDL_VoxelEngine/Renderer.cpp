@@ -107,6 +107,55 @@ SDL_Color Renderer::raycast(float x, float y, float z, float* ray) {
 	float startY = y;
 	float startZ = z;
 
+	int size = world->getSize();
+	// handle x out of bounds
+	if ((x < 0.0f) && (ray[0] > 0.0f)) {
+		float diff = -x;
+		x += diff;
+		// will never be division by zero because of our condition
+		y += (ray[1] * diff) / ray[0];
+		z += (ray[2] * diff) / ray[0];
+	}
+	else if ((x > size) && (ray[0] < 0.0f)) {
+		float diff = size - x;
+		x += diff;
+		y += (ray[1] * diff) / ray[0];
+		z += (ray[2] * diff) / ray[0];
+	}
+	// handle y out of bounds
+	if ((y < 0.0f) && (ray[1] > 0.0f)) {
+		float diff = -y;
+		y += diff;
+		x += (ray[0] * diff) / ray[1];
+		z += (ray[2] * diff) / ray[1];
+	}
+	else if ((y > size) && (ray[1] < 0.0f)) {
+		float diff = size - y;
+		y += diff;
+		x += (ray[0] * diff) / ray[1];
+		z += (ray[2] * diff) / ray[1];
+	}
+	// handle z out of bounds
+	if ((z < 0.0f) && (ray[2] > 0.0f)) {
+		float diff = -z;
+		z += diff;
+		x += (ray[0] * diff) / ray[2];
+		y += (ray[1] * diff) / ray[2];
+	}
+	else if ((z > size) && (ray[2] < 0.0f)) {
+		float diff = size - z;
+		z += diff;
+		x += (ray[0] * diff) / ray[2];
+		y += (ray[1] * diff) / ray[2];
+	}
+
+	// return skybox if we're still out of bounds
+	if ((x < -0.1f) || (x > size + 0.1f) ||
+		(y < -0.1f) || (y > size + 0.1f) ||
+		(z < -0.1f) || (z > size + 0.1f)) {
+		return skybox;
+	}
+  
 	float dx = ray[0] * renderDistance;
 	float dy = ray[1] * renderDistance;
 	float dz = ray[2] * renderDistance;
