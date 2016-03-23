@@ -246,6 +246,7 @@ void printPaletteOptions() {
 void printObjectTypeOptions() {
 	printf("ObjectType options:\n");
 	printf("  box\n");
+	printf("  rng-box\n");
 	printf("  bulb\n");
 	printf("  cube\n");
 	printf("  sponge\n");
@@ -376,6 +377,23 @@ int main(int argc, char* args[]) {
 		cin >> zoom;
 		printf("Fallout = ");
 		cin >> fallout;
+	}	else if (ObjectType == "rng-box") {
+		minIt = rand() % 6 + 3;
+		maxIt = minIt + (rand() % 50);
+		scale = 1.0f + ((rand() % 12500) / 5000.0f); // maximum value = 3.5
+		if (rand() % 2 == 1) {
+			// negative scale
+			scale = -scale;
+		}
+		zoom = 4.0f;
+		fallout = 1.5f * scale * scale;
+		printf("Generating mandelbox");
+		printf("  minIt = %d", minIt);
+		printf("  maxIT = %d", maxIt);
+		printf("  scale = %.3f", scale);
+		printf("  zoom = %.3f", zoom);
+		printf("  fallout = %.3f", fallout);
+		ObjectType = "box";
 	}
 
 	// Initialize world variables
