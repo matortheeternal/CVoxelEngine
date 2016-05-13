@@ -2,7 +2,7 @@
 A C++ Voxel Engine, to succeed my Java Voxel Engine.  Uses SDL, and may use OpenCL in the future.
 
 ## Images
-You can see images that I've generated using this graphics engine [here](http://imgur.com/a/0aU6M/all).  (WARNING: Ultra-high-resolution images, don't open if you have limited bandwidth.)
+You can see images that I've generated using this graphics engine [here](https://imgur.com/a/z4xsH) and [here](http://imgur.com/a/0aU6M/all).  (WARNING: Ultra-high-resolution images, don't open if you have limited bandwidth.)
 
 ## Libraries
 You need to install the SDL dlls in your system root directory in order to build or run my CVoxelEngine.  I have provided the 64-bit SDL dlls in the lib folder of this repository, which you'd install in %SystemRoot%\SysWOW64 (e.g. C:\Windows\SysWOW64).
